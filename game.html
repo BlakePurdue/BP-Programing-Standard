@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Flabby bird 2018</title>
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="300" height="500"> </canvas>
+    <script src="player.js"></script>
+    <script>
+        var canvas, canvasContext;
+        
+    window.onload = function() {
+        canvas = document.getElementById('gameCanvas');
+        canvasContext = canvas.getContext('2d');
+        
+        document.addEventListener('keydown', KeyPressed);
+        document.addEventListener('keyup', KeyReleased);
+        
+        setInterval(mainLoop, 1000/50);
+    }
+    var pxPos = 0;
+    var pyPos = 0;
+    const PLAYER_WIDTH = 30;
+    const PLAYER_HEIGHT = 50;
+    var Xspeed = 2;
+    var Yspeed = 10;
+        
+    var yVelocity = -2;    
+        
+    var bird = new Player(pxPos,pyPos,PLAYER_WIDTH,PLAYER_HEIGHT,"yellow",Xspeed,Yspeed)
+    
+    function mainLoop () {
+        colorRect(0,0,canvas.width,canvas.height,'black');
+        bird.playerDraw();
+        bird.playerMove();
+    }
+        
+    function colorRect (x,y,w,h,c) {
+        canvasContext.fillStyle =c;
+        canvasContext.fillRect(x,y,w,h);
+    }
+    </script>
+    
+    
+</body>
+    
+</html>
