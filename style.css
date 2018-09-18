@@ -1,0 +1,12 @@
+html {
+    background-color: chartreuse;
+}
+
+.gameCanvas {
+    position: relative;
+    float: right;
+}
+
+.h2 {
+    font-size: 100px;
+}

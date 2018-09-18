@@ -2,10 +2,11 @@
 <html>
 <head>
 <title>Flabby bird 2018</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="300" height="500"> </canvas>
+    <canvas id="gameCanvas" width="400" height="550"> </canvas>
     <script src="player.js"></script>
     <script>
         var canvas, canvasContext;
@@ -14,8 +15,8 @@
         canvas = document.getElementById('gameCanvas');
         canvasContext = canvas.getContext('2d');
         
-        document.addEventListener('keydown', KeyPressed);
-        document.addEventListener('keyup', KeyReleased);
+        document.addEventListener('keydown', keyPressed);
+        document.addEventListener('keyup', keyReleased);
         
         setInterval(mainLoop, 1000/50);
     }
@@ -25,6 +26,7 @@
     const PLAYER_HEIGHT = 50;
     var Xspeed = 2;
     var Yspeed = 10;
+    const SPACE_KEY = 32;
         
     var yVelocity = -2;    
         
@@ -40,9 +42,22 @@
         canvasContext.fillStyle =c;
         canvasContext.fillRect(x,y,w,h);
     }
+        
+    function keyPressed(evt) {
+        if(evt.keyCode == SPACE_KEY) {
+            spaceKeyPressed = true; 
+            console.log("space pressed");
+        }
+    }
+    function keyReleased(evt) {
+        if(evt.keycode == SPACE_KEY) {
+            spaceKeyPressed = false;
+            console.log("space released");
+        }
+    }
     </script>
     
-    
+    <h2> Flappybird</h2>
 </body>
     
 </html>
