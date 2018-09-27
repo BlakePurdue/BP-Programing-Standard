@@ -6,8 +6,9 @@
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="400" height="550"> </canvas>
+    <canvas id="gameCanvas" width="600" height="550"> </canvas>
     <script src="player.js"></script>
+    <script src="pipe.js"></script>
     <script>
         var canvas, canvasContext;
         
@@ -19,14 +20,23 @@
         document.addEventListener('keyup', keyReleased);
         
         setInterval(mainLoop, 1000/50);
+        
+        
     }
     var pxPos = 0;
     var pyPos = 0;
     const PLAYER_WIDTH = 30;
     const PLAYER_HEIGHT = 50;
     var Xspeed = 2;
-    var Yspeed = 10;
+    var Yspeed = 0;
     const SPACE_KEY = 32;
+    var spaceKeyPressed = false;
+    var pipes = [];
+    var pipesTotal = 8;
+    var pipeCount = 0;
+    var yRand = 0;
+        
+    var settingUp = true;    
         
     var yVelocity = -2;    
         
@@ -36,6 +46,16 @@
         colorRect(0,0,canvas.width,canvas.height,'black');
         bird.playerDraw();
         bird.playerMove();
+        
+        if(settingUp){
+           makePipes();
+        }
+        if(pipes.length > 0){
+           pipes.forEach(function(pipe,index){
+               pipe.pipeDraw();
+               pipe.pipeMove();
+           });
+           }
     }
         
     function colorRect (x,y,w,h,c) {
@@ -46,14 +66,40 @@
     function keyPressed(evt) {
         if(evt.keyCode == SPACE_KEY) {
             spaceKeyPressed = true; 
-            console.log("space pressed");
+//            console.log("space pressed");
         }
     }
     function keyReleased(evt) {
-        if(evt.keycode == SPACE_KEY) {
+        if(evt.keyCode == SPACE_KEY) {
             spaceKeyPressed = false;
-            console.log("space released");
+//            console.log("space released");
         }
+    }
+    
+    function makePipes(){
+        for(i = 0;i< pipesTotal;i++){
+            drawPipe();
+        }
+        settingUp = false;
+    }
+        
+    function drawPipe (){
+        
+        var pipeSpace = Math.floor(Math.random()*(250-180)+180);
+        const PIPE_WIDTH = 40;
+        const PIPE_HEIGHT = canvas.height /3 * 2;
+        var pipeXpos = canvas.width + ((pipeSpace + PIPE_WIDTH) * pipeCount);
+        var pipeYpos = yRand * canvas.height - PIPE_HEIGHT/2;
+        var pipexSpeed = -5;
+        console.log(pipeYpos + ":" + yRand);
+        
+        if(yRand > 0 ){
+            pipeCount++;
+            yRand = 0;
+        }
+        yRand++;
+        var p = new Pipe(pipeXpos,pipeYpos,PIPE_WIDTH,PIPE_HEIGHT,'green',pipexSpeed); 
+            pipes.push(p);
     }
     </script>
     

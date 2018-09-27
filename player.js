@@ -13,7 +13,14 @@ class Player{
         canvasContext.fillRect(this.x,this.y,this.w,this.h);
     }
     playerMove (){
-        this.x += this.xspeed;
+       this.x = canvas.width / 3;
+        if(spaceKeyPressed){
+           this.yspeed = -9;
+//            console.log("jumping");
+           }
+        this.yspeed += 0.5;
+        this.y += this.yspeed;
+        this.yspeed *= 0.98;
     }
 }
 
