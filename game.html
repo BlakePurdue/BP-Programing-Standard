@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Flabby bird 2018</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Flabby bird 2018</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
@@ -11,99 +12,125 @@
     <script src="pipe.js"></script>
     <script>
         var canvas, canvasContext;
-        
-    window.onload = function() {
-        canvas = document.getElementById('gameCanvas');
-        canvasContext = canvas.getContext('2d');
-        
-        document.addEventListener('keydown', keyPressed);
-        document.addEventListener('keyup', keyReleased);
-        
-        setInterval(mainLoop, 1000/50);
-        
-        
-    }
-    var pxPos = 0;
-    var pyPos = 0;
-    const PLAYER_WIDTH = 30;
-    const PLAYER_HEIGHT = 50;
-    var Xspeed = 2;
-    var Yspeed = 0;
-    const SPACE_KEY = 32;
-    var spaceKeyPressed = false;
-    var pipes = [];
-    var pipesTotal = 8;
-    var pipeCount = 0;
-    var yRand = 0;
-        
-    var settingUp = true;    
-        
-    var yVelocity = -2;    
-        
-    var bird = new Player(pxPos,pyPos,PLAYER_WIDTH,PLAYER_HEIGHT,"yellow",Xspeed,Yspeed)
-    
-    function mainLoop () {
-        colorRect(0,0,canvas.width,canvas.height,'black');
-        bird.playerDraw();
-        bird.playerMove();
-        
-        if(settingUp){
-           makePipes();
+
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
+
+            setInterval(mainLoop, 1000 / 50);
+
+
         }
-        if(pipes.length > 0){
-           pipes.forEach(function(pipe,index){
-               pipe.pipeDraw();
-               pipe.pipeMove();
-           });
-           }
-    }
-        
-    function colorRect (x,y,w,h,c) {
-        canvasContext.fillStyle =c;
-        canvasContext.fillRect(x,y,w,h);
-    }
-        
-    function keyPressed(evt) {
-        if(evt.keyCode == SPACE_KEY) {
-            spaceKeyPressed = true; 
-//            console.log("space pressed");
+        var pxPos = 0;
+        var pyPos = 0;
+        const PLAYER_WIDTH = 30;
+        const PLAYER_HEIGHT = 50;
+        var Xspeed = 2;
+        var Yspeed = 0;
+        const SPACE_KEY = 32;
+        var spaceKeyPressed = false;
+        var pipes = [];
+        var pipesTotal = 18;
+        var pipeCount = 0;
+        var pipePearsCount = 0;
+        var yRand = 0;
+
+        var settingUp = true;
+        var pipePairCount = 0;
+        var Gap = 0;
+
+        var yVelocity = -2;
+
+        var bird = new Player(pxPos, pyPos, PLAYER_WIDTH, PLAYER_HEIGHT, "yellow", Xspeed, Yspeed)
+
+        var playerName = prompt("Please enter your name", "Flappy Bird");
+
+        var playerName = prompt("Please enter your name", "Harry Potter");
+
+        if (playerName == null || playerName == "") {
+            txt = "User cancelled the prompt.";
+        } else {
+            txt = "Hello " + playerName + "! How are you today?";
         }
-    }
-    function keyReleased(evt) {
-        if(evt.keyCode == SPACE_KEY) {
-            spaceKeyPressed = false;
-//            console.log("space released");
+
+        function mainLoop() {
+            colorRect(0, 0, canvas.width, canvas.height, 'black');
+            bird.playerDraw();
+            bird.playerMove();
+
+            if (settingUp) {
+                //makePipes();
+                for (i = 0; i < pipesTotal; i++) {
+                    up();
+                    bottom();
+                }
+                settingUp = false;
+            }
+
+            if (pipes.length > 0) {
+                pipes.forEach(function(pipe, i) {
+                    pipe.pipeDraw();
+                    pipe.pipeMove();
+                });
+            }
         }
-    }
-    
-    function makePipes(){
-        for(i = 0;i< pipesTotal;i++){
-            drawPipe();
+
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
         }
-        settingUp = false;
-    }
-        
-    function drawPipe (){
-        
-        var pipeSpace = Math.floor(Math.random()*(250-180)+180);
-        const PIPE_WIDTH = 40;
-        const PIPE_HEIGHT = canvas.height /3 * 2;
-        var pipeXpos = canvas.width + ((pipeSpace + PIPE_WIDTH) * pipeCount);
-        var pipeYpos = yRand * canvas.height - PIPE_HEIGHT/2;
-        var pipexSpeed = -5;
-        console.log(pipeYpos + ":" + yRand);
-        
-        if(yRand > 0 ){
-            pipeCount++;
-            yRand = 0;
+
+        function keyPressed(evt) {
+            if (evt.keyCode == SPACE_KEY) {
+                spaceKeyPressed = true;
+                //            console.log("space pressed");
+            }
         }
-        yRand++;
-        var p = new Pipe(pipeXpos,pipeYpos,PIPE_WIDTH,PIPE_HEIGHT,'green',pipexSpeed); 
+
+        function keyReleased(evt) {
+            if (evt.keyCode == SPACE_KEY) {
+                spaceKeyPressed = false;
+                //            console.log("space released");
+            }
+        }
+
+        //function makePipes(){
+        //        drawTopPipe();
+        //        console.log("running function for making pipes");
+        //      pipeNumber ++;
+        //    console.log("amount of pipes" + pipeNumber);
+        //}
+
+        function up() {
+            Gap = Math.floor(Math.random() * (500 - 300) + 200);
+            var yPos = 0 - Math.floor(Math.random() * (50 - 20) + 20);
+            var xPos = canvas.width + pipePairCount * Gap;
+            const WIDTH = 40;
+            var height = Math.floor(Math.random() * (200 - 150) + 150);
+
+            var p = new Pipe(xPos, yPos, WIDTH, height, "red", Xspeed)
             pipes.push(p);
-    }
+        }
+
+        function bottom() {
+            var yPos = canvas.height - Math.floor(Math.random() * ((canvas.height * 0.6) - 50) + 50);
+            var xPos = canvas.width + pipePairCount * Gap;
+            const WIDTH = 40;
+            var height = Math.floor(Math.random() * (800 - 100) + 100);
+
+            var p = new Pipe(xPos, yPos, WIDTH, height, "blue", Xspeed)
+            pipes.push(p);
+
+            pipePairCount++;
+        }
+
     </script>
-    
+
     <h2> Flappybird</h2>
+
 </body>
-    
+
 </html>
